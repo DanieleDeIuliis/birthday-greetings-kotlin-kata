@@ -9,8 +9,7 @@ import javax.mail.Transport
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
-class MailNotificationService(private val smtpHost: String, private val smtpPort: Int) :
-    NotificationService {
+class MailNotificationService(private val smtpHost: String, private val smtpPort: Int) : NotificationService {
     override fun sendGreetingsTo(employee: Employee) {
         val recipient = employee.email
         val body = "Happy Birthday, dear %NAME%".replace("%NAME%", employee.firstName!!)
