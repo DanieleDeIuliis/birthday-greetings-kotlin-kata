@@ -11,9 +11,15 @@ import javax.mail.internet.MimeMessage
 
 class BirthdayService {
     fun sendGreetings(fileName: String?, xDate: XDate, smtpHost: String, smtpPort: Int) {
+        employeesToGreet(fileName, xDate)
+            .forEach { sendGreetingsTo(it, smtpHost, smtpPort) }
+    }
+
+    private fun employeesToGreet(fileName: String?, xDate: XDate): MutableList<Employee> {
         val reader = BufferedReader(FileReader(fileName))
-        var str : String? = ""
+        var str: String? = ""
         str = reader.readLine() // skip header
+
         val employeesToGreet = mutableListOf<Employee>()
         while (reader.readLine().also { str = it } != null) {
             val employeeData = str!!.split(", ")
@@ -22,8 +28,7 @@ class BirthdayService {
                 employeesToGreet.add(employee)
             }
         }
-
-        employeesToGreet.forEach { sendGreetingsTo(it, smtpHost, smtpPort) }
+        return employeesToGreet
     }
 
     private fun sendGreetingsTo(
