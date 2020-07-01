@@ -26,12 +26,7 @@ class AcceptanceTest {
 
     @Test
     fun `will send greetings when it's somebody's birthday`() {
-        birthdayService.sendGreetings(
-            "employee_data.txt",
-            XDate("2008/10/08"),
-            "localhost",
-            NONSTANDARD_PORT
-        )
+        birthdayService.sendGreetings("employee_data.txt", XDate("2008/10/08"), "localhost", NONSTANDARD_PORT)
         assertEquals("message not sent?", 1, mailServer.receivedEmailSize.toLong())
 
         val message = mailServer.receivedEmail.next() as SmtpMessage
