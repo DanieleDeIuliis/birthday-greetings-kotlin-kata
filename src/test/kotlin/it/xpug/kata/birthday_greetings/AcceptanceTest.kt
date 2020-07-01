@@ -9,7 +9,7 @@ import org.junit.Before
 import org.junit.Test
 
 class AcceptanceTest {
-    private val birthdayService = BirthdayService()
+    private val birthdayService = BirthdayService(MailNotificationService())
 
     private lateinit var mailServer: SimpleSmtpServer
 

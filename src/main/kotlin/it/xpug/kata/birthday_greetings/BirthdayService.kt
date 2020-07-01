@@ -9,7 +9,7 @@ import javax.mail.Transport
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
-class BirthdayService {
+class BirthdayService(private val notificationService: NotificationService) {
     fun sendGreetings(fileName: String?, xDate: XDate, smtpHost: String, smtpPort: Int) {
         employeesToGreet(fileName, xDate)
             .forEach { sendGreetingsTo(it, smtpHost, smtpPort) }
