@@ -1,5 +1,7 @@
-package it.xpug.kata.birthday_greetings
+package it.xpug.kata.birthday_greetings.infrastructure
 
+import it.xpug.kata.birthday_greetings.Employee
+import it.xpug.kata.birthday_greetings.NotificationService
 import java.util.*
 import javax.mail.Message
 import javax.mail.Session
@@ -7,8 +9,9 @@ import javax.mail.Transport
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
-class MailNotificationService : NotificationService {
-    override fun sendGreetingsTo(employee: Employee, smtpHost: String, smtpPort: Int) {
+class MailNotificationService(private val smtpHost: String, private val smtpPort: Int) :
+    NotificationService {
+    override fun sendGreetingsTo(employee: Employee) {
         val recipient = employee.email
         val body = "Happy Birthday, dear %NAME%".replace("%NAME%", employee.firstName!!)
         val subject = "Happy Birthday!"

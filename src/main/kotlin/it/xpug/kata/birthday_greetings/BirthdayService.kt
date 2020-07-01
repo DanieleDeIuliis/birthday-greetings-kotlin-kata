@@ -2,17 +2,11 @@ package it.xpug.kata.birthday_greetings
 
 import java.io.BufferedReader
 import java.io.FileReader
-import java.util.*
-import javax.mail.Message
-import javax.mail.Session
-import javax.mail.Transport
-import javax.mail.internet.InternetAddress
-import javax.mail.internet.MimeMessage
 
 class BirthdayService(private val notificationService: NotificationService) {
-    fun sendGreetings(fileName: String?, xDate: XDate, smtpHost: String, smtpPort: Int) {
+    fun sendGreetings(fileName: String?, xDate: XDate) {
         employeesToGreet(fileName, xDate)
-            .forEach { notificationService.sendGreetingsTo(it, smtpHost, smtpPort) }
+            .forEach { notificationService.sendGreetingsTo(it) }
     }
 
     private fun employeesToGreet(fileName: String?, xDate: XDate): MutableList<Employee> {

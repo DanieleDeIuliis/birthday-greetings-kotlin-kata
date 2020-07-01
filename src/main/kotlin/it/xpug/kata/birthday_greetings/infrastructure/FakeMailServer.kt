@@ -1,4 +1,4 @@
-package it.xpug.kata.birthday_greetings
+package it.xpug.kata.birthday_greetings.infrastructure
 
 import com.icegreen.greenmail.util.GreenMail
 import com.icegreen.greenmail.util.GreenMailUtil
