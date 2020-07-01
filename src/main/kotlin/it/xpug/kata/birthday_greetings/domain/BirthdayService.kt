@@ -5,7 +5,7 @@ class BirthdayService(
     private val employeeRepository: EmployeeRepository
 ) {
     fun sendGreetings(date: XDate) {
-        employeeRepository.employeesToGreet(date)
+        employeeRepository.employeesHavingBirthdayAt(date)
             .forEach { notificationService.sendGreetingsTo(it) }
     }
 

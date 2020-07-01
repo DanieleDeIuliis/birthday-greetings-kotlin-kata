@@ -7,7 +7,7 @@ import java.io.BufferedReader
 import java.io.FileReader
 
 class FileEmployeeRepository(private val fileName: String?) : EmployeeRepository {
-    override fun employeesToGreet(xDate: XDate): MutableList<Employee> {
+    override fun employeesHavingBirthdayAt(xDate: XDate): MutableList<Employee> {
         val reader = BufferedReader(FileReader(fileName))
         var str: String? = ""
         str = reader.readLine() // skip header
