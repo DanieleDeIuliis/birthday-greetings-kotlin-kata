@@ -12,7 +12,7 @@ import javax.mail.internet.MimeMessage
 class BirthdayService(private val notificationService: NotificationService) {
     fun sendGreetings(fileName: String?, xDate: XDate, smtpHost: String, smtpPort: Int) {
         employeesToGreet(fileName, xDate)
-            .forEach { sendGreetingsTo(it, smtpHost, smtpPort) }
+            .forEach { notificationService.sendGreetingsTo(it, smtpHost, smtpPort) }
     }
 
     private fun employeesToGreet(fileName: String?, xDate: XDate): MutableList<Employee> {
@@ -29,41 +29,5 @@ class BirthdayService(private val notificationService: NotificationService) {
             }
         }
         return employeesToGreet
-    }
-
-    private fun sendGreetingsTo(
-        employee: Employee,
-        smtpHost: String,
-        smtpPort: Int
-    ) {
-        val recipient = employee.email
-        val body = "Happy Birthday, dear %NAME%".replace("%NAME%", employee.firstName!!)
-        val subject = "Happy Birthday!"
-        sendMessage(smtpHost, smtpPort, "sender@here.com", subject, body, recipient)
-    }
-
-    private fun sendMessage(
-        smtpHost: String,
-        smtpPort: Int,
-        sender: String,
-        subject: String,
-        body: String,
-        recipient: String?
-    ) {
-        // Create a mail session
-        val props = Properties()
-        props["mail.smtp.host"] = smtpHost
-        props["mail.smtp.port"] = "" + smtpPort
-        val session = Session.getInstance(props, null)
-
-        // Construct the message
-        val msg: Message = MimeMessage(session)
-        msg.setFrom(InternetAddress(sender))
-        msg.setRecipient(Message.RecipientType.TO, InternetAddress(recipient))
-        msg.subject = subject
-        msg.setText(body)
-
-        // Send the message
-        Transport.send(msg)
     }
 }
