@@ -14,16 +14,27 @@ class BirthdayService {
         val reader = BufferedReader(FileReader(fileName))
         var str : String? = ""
         str = reader.readLine() // skip header
+        val employeesToGreet = mutableListOf<Employee>()
         while (reader.readLine().also { str = it } != null) {
             val employeeData = str!!.split(", ")
             val employee = Employee(employeeData[1], employeeData[0], employeeData[2], employeeData[3])
             if (employee.isBirthday(xDate)) {
-                val recipient = employee.email
-                val body = "Happy Birthday, dear %NAME%".replace("%NAME%", employee.firstName!!)
-                val subject = "Happy Birthday!"
-                sendMessage(smtpHost, smtpPort, "sender@here.com", subject, body, recipient)
+                employeesToGreet.add(employee)
             }
         }
+
+        employeesToGreet.forEach { sendGreetingsTo(it, smtpHost, smtpPort) }
+    }
+
+    private fun sendGreetingsTo(
+        employee: Employee,
+        smtpHost: String,
+        smtpPort: Int
+    ) {
+        val recipient = employee.email
+        val body = "Happy Birthday, dear %NAME%".replace("%NAME%", employee.firstName!!)
+        val subject = "Happy Birthday!"
+        sendMessage(smtpHost, smtpPort, "sender@here.com", subject, body, recipient)
     }
 
     private fun sendMessage(
