@@ -2,6 +2,9 @@ package it.xpug.kata.birthday_greetings
 
 import com.dumbster.smtp.SimpleSmtpServer
 import com.dumbster.smtp.SmtpMessage
+import it.xpug.kata.birthday_greetings.domain.BirthdayService
+import it.xpug.kata.birthday_greetings.domain.XDate
+import it.xpug.kata.birthday_greetings.infrastructure.FileEmployeeRepository
 import it.xpug.kata.birthday_greetings.infrastructure.MailNotificationService
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -10,10 +13,8 @@ import org.junit.Test
 
 class AcceptanceTest {
     private val birthdayService = BirthdayService(
-        MailNotificationService(
-            "localhost",
-            NONSTANDARD_PORT
-        )
+        MailNotificationService("localhost", NONSTANDARD_PORT),
+        FileEmployeeRepository("employee_data.txt")
     )
 
     private lateinit var mailServer: SimpleSmtpServer
@@ -31,7 +32,7 @@ class AcceptanceTest {
 
     @Test
     fun `will send greetings when it's somebody's birthday`() {
-        birthdayService.sendGreetings("employee_data.txt", XDate("2008/10/08"))
+        birthdayService.sendGreetings(XDate("2008/10/08"))
         assertEquals("message not sent?", 1, mailServer.receivedEmailSize.toLong())
 
         val message = mailServer.receivedEmail.next() as SmtpMessage
@@ -46,7 +47,6 @@ class AcceptanceTest {
     @Test
     fun `will not send emails when it's nobody's birthday`() {
         birthdayService.sendGreetings(
-            "employee_data.txt",
             XDate("2008/01/01")
         )
         assertEquals("what? messages?", 0, mailServer.receivedEmailSize.toLong())

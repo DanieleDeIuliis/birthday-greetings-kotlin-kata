@@ -1,7 +1,7 @@
 package it.xpug.kata.birthday_greetings.infrastructure
 
-import it.xpug.kata.birthday_greetings.Employee
-import it.xpug.kata.birthday_greetings.NotificationService
+import it.xpug.kata.birthday_greetings.domain.Employee
+import it.xpug.kata.birthday_greetings.domain.NotificationService
 import java.util.*
 import javax.mail.Message
 import javax.mail.Session

@@ -1,4 +1,4 @@
-package it.xpug.kata.birthday_greetings
+package it.xpug.kata.birthday_greetings.domain
 
 class Employee(
     val firstName: String?,
