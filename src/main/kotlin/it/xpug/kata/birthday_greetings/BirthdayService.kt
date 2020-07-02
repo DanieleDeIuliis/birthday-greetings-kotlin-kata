@@ -2,7 +2,7 @@ package it.xpug.kata.birthday_greetings
 
 class BirthdayService(val notificationService: NotificationService, val lineReader: LineReader) {
     fun sendGreetings(fileName: String?, xDate: XDate) {
-        val lines = lines(fileName)
+        val lines = lineReader.lines(fileName!!)
         lines
             .takeLast(lines.size - 1)
             .forEach {
@@ -16,6 +16,4 @@ class BirthdayService(val notificationService: NotificationService, val lineRead
                 }
             }
     }
-
-    private fun lines(filename: String?): List<String> = lineReader.lines(filename!!)
 }
