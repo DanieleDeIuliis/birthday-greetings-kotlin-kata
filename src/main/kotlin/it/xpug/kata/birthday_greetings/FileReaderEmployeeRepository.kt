@@ -6,10 +6,10 @@ import java.io.FileReader
 class FileReaderEmployeeRepository: EmployeeRepository {
 
     override fun readEmployee(): List<Employee> {
-        var bufferedReader = BufferedReader(FileReader("employee_data.txt"))
+        val bufferedReader = BufferedReader(FileReader("employee_data.txt"))
         var str: String? = ""
         str = bufferedReader.readLine() // skip header
-        var employee = mutableListOf<Employee>();
+        val employee = mutableListOf<Employee>()
         while (bufferedReader.readLine().also { str = it } != null) {
             val employeeData = str!!.split(", ")
             employee.add(Employee(employeeData[1], employeeData[0], employeeData[2], employeeData[3]))
