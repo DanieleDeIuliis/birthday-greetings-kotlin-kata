@@ -1,12 +1,8 @@
 package it.xpug.kata.birthday_greetings
 
-import java.io.BufferedReader
-import java.io.FileReader
-
-class BirthdayService(val notificationService: NotificationService) {
+class BirthdayService(val notificationService: NotificationService, val lineReader: LineReader) {
     fun sendGreetings(fileName: String?, xDate: XDate) {
-        val reader = BufferedReader(FileReader(fileName))
-        val lines = reader.readLines()
+        val lines = lines(fileName)
         lines
             .takeLast(lines.size - 1)
             .forEach {
@@ -20,4 +16,6 @@ class BirthdayService(val notificationService: NotificationService) {
                 }
             }
     }
+
+    private fun lines(filename: String?): List<String> = lineReader.lines(filename!!)
 }

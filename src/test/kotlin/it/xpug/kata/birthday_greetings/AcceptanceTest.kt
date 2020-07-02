@@ -8,7 +8,7 @@ import org.junit.Before
 import org.junit.Test
 
 class AcceptanceTest {
-    private val birthdayService = BirthdayService(MailNotificationService("localhost", NONSTANDARD_PORT))
+    private val birthdayService = BirthdayService(MailNotificationService("localhost", NONSTANDARD_PORT), FileLineReader())
 
     private lateinit var mailServer: SimpleSmtpServer
 
