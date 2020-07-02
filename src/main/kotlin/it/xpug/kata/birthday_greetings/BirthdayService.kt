@@ -1,12 +1,12 @@
 package it.xpug.kata.birthday_greetings
 
-class BirthdayService(val notificationService: NotificationService, val lineReader: LineReader) {
+class BirthdayService(private val notificationService: NotificationService, private val lineReader: LineReader) {
     fun sendGreetings(fileName: String?, xDate: XDate) {
         val lines = lineReader.lines(fileName!!)
         lines
             .takeLast(lines.size - 1)
-            .forEach {
-                val employeeData = it.split(", ")
+            .forEach { line ->
+                val employeeData = line.split(", ")
                 val employee = Employee(employeeData[1], employeeData[0], employeeData[2], employeeData[3])
                 if (employee.isBirthday(xDate)) {
                     val recipient = employee.email
