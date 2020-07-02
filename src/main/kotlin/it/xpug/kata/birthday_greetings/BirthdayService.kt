@@ -7,23 +7,33 @@ import javax.mail.Transport
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
-class BirthdayService(private val employeeRepository: EmployeeRepository) {
+class BirthdayService(
+    private val smtpHost: String,
+    private val smtpPort: Int,
+    private val employeeRepository: EmployeeRepository
+) {
     fun sendGreetings(
-        xDate: XDate,
-        smtpHost: String,
-        smtpPort: Int
+        xDate: XDate
     ) {
 
         val readEmployee = employeeRepository.readEmployee()
 
         readEmployee.forEach { employee ->
             if (employee.isBirthday(xDate)) {
-                val recipient = employee.email
-                val body = "Happy Birthday, dear %NAME%".replace("%NAME%", employee.firstName!!)
-                val subject = "Happy Birthday!"
-                sendMessage(smtpHost, smtpPort, "sender@here.com", subject, body, recipient)
+                sendGreetingsToEmployee(employee, smtpHost, smtpPort)
             }
         }
+    }
+
+    private fun sendGreetingsToEmployee(
+        employee: Employee,
+        smtpHost: String,
+        smtpPort: Int
+    ) {
+        val recipient = employee.email
+        val body = "Happy Birthday, dear %NAME%".replace("%NAME%", employee.firstName!!)
+        val subject = "Happy Birthday!"
+        sendMessage(smtpHost, smtpPort, "sender@here.com", subject, body, recipient)
     }
 
     private fun sendMessage(

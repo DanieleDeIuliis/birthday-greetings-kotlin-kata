@@ -8,7 +8,7 @@ import org.junit.Before
 import org.junit.Test
 
 class AcceptanceTest {
-    private val birthdayService = BirthdayService(FileReaderEmployeeRepository())
+    private val birthdayService = BirthdayService("localhost", NONSTANDARD_PORT, FileReaderEmployeeRepository())
 
     private lateinit var mailServer: SimpleSmtpServer
 
@@ -26,9 +26,7 @@ class AcceptanceTest {
     @Test
     fun `will send greetings when it's somebody's birthday`() {
         birthdayService.sendGreetings(
-            XDate("2008/10/08"),
-            "localhost",
-            NONSTANDARD_PORT
+            XDate("2008/10/08")
         )
         assertEquals("message not sent?", 1, mailServer.receivedEmailSize.toLong())
 
@@ -44,9 +42,7 @@ class AcceptanceTest {
     @Test
     fun `will not send emails when it's nobody's birthday`() {
         birthdayService.sendGreetings(
-            XDate("2008/01/01"),
-            "localhost",
-            NONSTANDARD_PORT
+            XDate("2008/01/01")
         )
         assertEquals("what? messages?", 0, mailServer.receivedEmailSize.toLong())
     }
