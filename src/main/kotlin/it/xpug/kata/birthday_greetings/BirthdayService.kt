@@ -1,7 +1,5 @@
 package it.xpug.kata.birthday_greetings
 
-import java.io.BufferedReader
-import java.io.FileReader
 import java.util.*
 import javax.mail.Message
 import javax.mail.Session
@@ -10,13 +8,16 @@ import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
 class BirthdayService {
-    fun sendGreetings(fileName: String?, xDate: XDate, smtpHost: String, smtpPort: Int) {
-        val reader = BufferedReader(FileReader(fileName))
-        var str : String? = ""
-        str = reader.readLine() // skip header
-        while (reader.readLine().also { str = it } != null) {
-            val employeeData = str!!.split(", ")
-            val employee = Employee(employeeData[1], employeeData[0], employeeData[2], employeeData[3])
+    fun sendGreetings(
+        xDate: XDate,
+        smtpHost: String,
+        smtpPort: Int,
+        employeeRepository: EmployeeRepository
+    ) {
+
+        var readEmployee = employeeRepository.readEmployee()
+
+        readEmployee.forEach { employee ->
             if (employee.isBirthday(xDate)) {
                 val recipient = employee.email
                 val body = "Happy Birthday, dear %NAME%".replace("%NAME%", employee.firstName!!)
