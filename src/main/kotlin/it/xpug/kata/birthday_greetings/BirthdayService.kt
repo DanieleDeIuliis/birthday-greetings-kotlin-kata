@@ -14,15 +14,23 @@ class BirthdayService {
     private val messageSubject: String = "Happy Birthday!"
 
     fun sendGreetings(fileName: String?, xDate: XDate, smtpHost: String, smtpPort: Int) {
-        val reader = BufferedReader(FileReader(fileName))
-        var str : String? = ""
-        str = reader.readLine() // skip header
-        while (reader.readLine().also { str = it } != null) {
-            val employee = parseEmployee(str)
+        val employees = parseInput(fileName)
+        employees.forEach { employee ->
             if (employee.isBirthday(xDate)) {
                 sendMessage(smtpHost, smtpPort, "sender@here.com", employee)
             }
         }
+    }
+
+    private fun parseInput(fileName: String?): MutableList<Employee> {
+        val reader = BufferedReader(FileReader(fileName))
+        var str: String? = ""
+        str = reader.readLine() // skip header
+        val employees = mutableListOf<Employee>()
+        while (reader.readLine().also { str = it } != null) {
+            employees.add(parseEmployee(str))
+        }
+        return employees
     }
 
     private fun parseEmployee(str: String?): Employee {
