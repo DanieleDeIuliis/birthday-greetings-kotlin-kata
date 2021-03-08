@@ -2,6 +2,7 @@ package it.xpug.kata.birthday_greetings
 
 import java.io.BufferedReader
 import java.io.FileReader
+import java.lang.StringBuilder
 import java.util.*
 import javax.mail.Message
 import javax.mail.Session
@@ -14,7 +15,8 @@ class BirthdayService {
     private val messageSubject: String = "Happy Birthday!"
 
     fun sendGreetings(fileName: String?, xDate: XDate, smtpHost: String, smtpPort: Int) {
-        val employees = parseInput(fileName)
+        val inputAsString = createInputString(fileName)
+        val employees = parseInput(inputAsString)
         employees.forEach { employee ->
             if (employee.isBirthday(xDate)) {
                 sendMessage(smtpHost, smtpPort, "sender@here.com", employee)
@@ -22,13 +24,26 @@ class BirthdayService {
         }
     }
 
-    private fun parseInput(fileName: String?): MutableList<Employee> {
+    private fun createInputString(fileName: String?): String {
         val reader = BufferedReader(FileReader(fileName))
-        var str: String? = ""
-        str = reader.readLine() // skip header
+        reader.readLine() // skip header
+        val stringBuilder = StringBuilder()
+        reader.lines().forEach { line ->
+            if(line.isNotNullOrEmpty()) {
+                stringBuilder.append("$line\n")
+            }
+        }
+        return stringBuilder.toString()
+    }
+    private fun String.isNotNullOrEmpty(): Boolean {
+        return !isNullOrEmpty()
+    }
+    private fun parseInput(input: String): List<Employee> {
         val employees = mutableListOf<Employee>()
-        while (reader.readLine().also { str = it } != null) {
-            employees.add(parseEmployee(str))
+        input.split("\n").forEach { line ->
+            if(line.isNotNullOrEmpty()) {
+                employees.add(parseEmployee(line))
+            }
         }
         return employees
     }
