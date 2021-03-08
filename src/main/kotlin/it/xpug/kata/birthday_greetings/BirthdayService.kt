@@ -10,6 +10,9 @@ import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
 class BirthdayService {
+
+    private val messageSubject: String = "Happy Birthday!"
+
     fun sendGreetings(fileName: String?, xDate: XDate, smtpHost: String, smtpPort: Int) {
         val reader = BufferedReader(FileReader(fileName))
         var str : String? = ""
@@ -19,8 +22,7 @@ class BirthdayService {
             if (employee.isBirthday(xDate)) {
                 val recipient = employee.email
                 val body = "Happy Birthday, dear ${employee.firstName}!"
-                val subject = "Happy Birthday!"
-                sendMessage(smtpHost, smtpPort, "sender@here.com", subject, body, recipient)
+                sendMessage(smtpHost, smtpPort, "sender@here.com", body, recipient)
             }
         }
     }
@@ -34,13 +36,12 @@ class BirthdayService {
         smtpHost: String,
         smtpPort: Int,
         sender: String,
-        subject: String,
         body: String,
         recipient: String?
     ) {
         val session = createSession(smtpHost, smtpPort)
 
-        val msg: Message = buildMessage(session, sender, recipient, subject, body)
+        val msg: Message = buildMessage(session, sender, recipient, messageSubject, body)
 
         Transport.send(msg)
     }
