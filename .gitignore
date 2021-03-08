@@ -1,4 +1,6 @@
 bin
 target
 /birthday-greetings.iml
+/birthday-greetings.ipr
+/birthday-greetings.iws
 /.idea/
