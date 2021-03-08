@@ -20,9 +20,7 @@ class BirthdayService {
         while (reader.readLine().also { str = it } != null) {
             val employee = parseEmployee(str)
             if (employee.isBirthday(xDate)) {
-                val recipient = employee.email
-                val body = "Happy Birthday, dear ${employee.firstName}!"
-                sendMessage(smtpHost, smtpPort, "sender@here.com", body, recipient)
+                sendMessage(smtpHost, smtpPort, "sender@here.com", employee)
             }
         }
     }
@@ -36,12 +34,11 @@ class BirthdayService {
         smtpHost: String,
         smtpPort: Int,
         sender: String,
-        body: String,
-        recipient: String?
+        employee: Employee
     ) {
         val session = createSession(smtpHost, smtpPort)
 
-        val msg: Message = buildMessage(session, sender, recipient, messageSubject, body)
+        val msg: Message = buildMessage(session, sender, messageSubject, employee)
 
         Transport.send(msg)
     }
@@ -49,10 +46,11 @@ class BirthdayService {
     private fun buildMessage(
         session: Session?,
         sender: String,
-        recipient: String?,
         subject: String,
-        body: String
+        employee: Employee
     ): Message {
+        val recipient = employee.email
+        val body = "Happy Birthday, dear ${employee.firstName}!"
         val msg: Message = MimeMessage(session)
         msg.setFrom(InternetAddress(sender))
         msg.setRecipient(Message.RecipientType.TO, InternetAddress(recipient))
