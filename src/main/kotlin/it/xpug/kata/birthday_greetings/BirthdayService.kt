@@ -38,7 +38,7 @@ class BirthdayService {
     ) {
         val session = createSession(smtpHost, smtpPort)
 
-        val msg: Message = buildMessage(session, sender, messageSubject, employee)
+        val msg: Message = buildMessage(session, sender, employee)
 
         Transport.send(msg)
     }
@@ -46,7 +46,6 @@ class BirthdayService {
     private fun buildMessage(
         session: Session?,
         sender: String,
-        subject: String,
         employee: Employee
     ): Message {
         val recipient = employee.email
@@ -54,7 +53,7 @@ class BirthdayService {
         val msg: Message = MimeMessage(session)
         msg.setFrom(InternetAddress(sender))
         msg.setRecipient(Message.RecipientType.TO, InternetAddress(recipient))
-        msg.subject = subject
+        msg.subject = messageSubject
         msg.setText(body)
         return msg
     }
