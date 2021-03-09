@@ -2,7 +2,6 @@ package it.xpug.kata.birthday_greetings
 
 import java.io.BufferedReader
 import java.io.FileReader
-import java.lang.StringBuilder
 import java.util.*
 import javax.mail.Message
 import javax.mail.Session
@@ -10,13 +9,13 @@ import javax.mail.Transport
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
-class BirthdayService {
+class BirthdayService(val inputParser: InputParser) {
 
     private val messageSubject: String = "Happy Birthday!"
 
     fun sendGreetings(fileName: String?, xDate: XDate, smtpHost: String, smtpPort: Int) {
         val inputAsString = createInputString(fileName)
-        val employees = parseInput(inputAsString)
+        val employees = inputParser.parse(inputAsString)
         employees.forEach { employee ->
             if (employee.isBirthday(xDate)) {
                 sendMessage(smtpHost, smtpPort, "sender@here.com", employee)
@@ -34,23 +33,6 @@ class BirthdayService {
             }
         }
         return stringBuilder.toString()
-    }
-    private fun String.isNotNullOrEmpty(): Boolean {
-        return !isNullOrEmpty()
-    }
-    private fun parseInput(input: String): List<Employee> {
-        val employees = mutableListOf<Employee>()
-        input.split("\n").forEach { line ->
-            if(line.isNotNullOrEmpty()) {
-                employees.add(parseEmployee(line))
-            }
-        }
-        return employees
-    }
-
-    private fun parseEmployee(str: String?): Employee {
-        val employeeData = str!!.split(", ")
-        return Employee(employeeData[1], employeeData[0], employeeData[2], employeeData[3])
     }
 
     private fun sendMessage(

@@ -3,13 +3,13 @@ package it.xpug.kata.birthday_greetings
 import com.dumbster.smtp.SimpleSmtpServer
 import com.dumbster.smtp.SmtpMessage
 import org.junit.After
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
 class AcceptanceTest {
-    private val birthdayService = BirthdayService()
+    private val inputParser = EmployeeParser()
+    private val birthdayService = BirthdayService(inputParser)
 
     private lateinit var mailServer: SimpleSmtpServer
 
