@@ -9,7 +9,7 @@ import javax.mail.Transport
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
-class BirthdayService(val inputParser: InputParser) {
+class BirthdayService(private val inputParser: InputParser) {
 
     private val messageSubject: String = "Happy Birthday!"
 
