@@ -13,26 +13,13 @@ class BirthdayService(private val inputParser: InputParser) {
 
     private val messageSubject: String = "Happy Birthday!"
 
-    fun sendGreetings(fileName: String?, xDate: XDate, smtpHost: String, smtpPort: Int) {
-        val inputAsString = createInputString(fileName)
+    fun sendGreetings(inputAsString: String, xDate: XDate, smtpHost: String, smtpPort: Int) {
         val employees = inputParser.parse(inputAsString)
         employees.forEach { employee ->
             if (employee.isBirthday(xDate)) {
                 sendMessage(smtpHost, smtpPort, "sender@here.com", employee)
             }
         }
-    }
-
-    private fun createInputString(fileName: String?): String {
-        val reader = BufferedReader(FileReader(fileName))
-        reader.readLine() // skip header
-        val stringBuilder = StringBuilder()
-        reader.lines().forEach { line ->
-            if(line.isNotNullOrEmpty()) {
-                stringBuilder.append("$line\n")
-            }
-        }
-        return stringBuilder.toString()
     }
 
     private fun sendMessage(
