@@ -7,7 +7,7 @@ import java.io.FileReader
 fun main() {
     FakeMailServer(port = 3025).start().use {
         val inputAsString = createInputString("employee_data.txt")
-        val service = BirthdayService(EmployeeParser())
+        val service = BirthdayService(EmployeeParser(), EmailSender())
         service.sendGreetings(inputAsString, XDate(), "localhost", 3025)
     }
 
