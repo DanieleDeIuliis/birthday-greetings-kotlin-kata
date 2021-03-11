@@ -3,11 +3,10 @@ package it.xpug.kata.birthday_greetings
 import java.util.*
 import javax.mail.Message
 import javax.mail.Session
-import javax.mail.Transport
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
-class EmailSender: MessageSender {
+class EmailSender(private val transporter: Transporter): MessageSender {
 
     private val messageSubject: String = "Happy Birthday!"
 
@@ -16,7 +15,7 @@ class EmailSender: MessageSender {
 
         val msg: Message = buildMessage(session, sender, employee)
 
-        Transport.send(msg)
+        transporter.send(msg)
     }
 
     private fun buildMessage(
