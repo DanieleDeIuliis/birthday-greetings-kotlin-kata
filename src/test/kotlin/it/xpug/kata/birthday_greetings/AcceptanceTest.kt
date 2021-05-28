@@ -10,7 +10,7 @@ import org.junit.Test
 class AcceptanceTest {
     private val inputParser = EmployeeParser()
     private val emailTransporter = EmailTransporter()
-    private val emailSender = EmailSender(emailTransporter)
+    private val emailSender = EmailSender(emailTransporter, BirthdayEmailMessageBuilder(), EmailSessionBuilder())
     private val birthdayService = BirthdayService(inputParser, emailSender)
 
     private lateinit var mailServer: SimpleSmtpServer
